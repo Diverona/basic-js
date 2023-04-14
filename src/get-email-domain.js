@@ -11,12 +11,13 @@ const { NotImplementedError } = require("../extensions/index.js");
  *
  */
 function getEmailDomain(email) {
-  console.log(email);
+  let atIndex = email.indexOf("@");
+  let curr = email.slice(atIndex + 1);
 
-  let dogIndex = email.lastIndexOf("@");
-  let curr = email.slice(dogIndex + 1);
+  if (curr.indexOf("@") !== -1) {
+    return getEmailDomain(curr);
+  }
 
-  console.log("curr: " + curr);
   return curr;
 }
 
