@@ -23,10 +23,12 @@ function isMAC48Address(n) {
 
   str = arr.join("");
 
-  for (let char of str) {
+  for (let i = 0; i < str.length; i++) {
+    let charCode = str.charCodeAt(i);
     if (
-      !(char >= "0" && char <= "9") &&
-      !(char.toUpperCase() >= "A" && char.toUpperCase() <= "F")
+      !(charCode >= 48 && charCode <= 57) &&
+      !(charCode >= 65 && charCode <= 70) &&
+      !(charCode >= 97 && charCode <= 102)
     ) {
       return false;
     }
