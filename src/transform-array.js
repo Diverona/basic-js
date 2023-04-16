@@ -14,33 +14,34 @@ const { NotImplementedError } = require("../extensions/index.js");
  *
  */
 function transform(arr) {
-  if (!Array.isArray(arr))
+  if (!Array.isArray(arr)) {
     throw new Error(`'arr' parameter must be an instance of the Array!`);
+  }
 
   let copyArr = [...arr];
+  let resultArr = [];
 
   for (let i = 0; i < copyArr.length; i++) {
     if (copyArr[i] === `--discard-next`) {
-      if (copyArr[i + 1]) {
-        copyArr.splice(i, 2);
-      } else {
-        copyArr.splice(i, 1);
+      i++;
+    } else if (copyArr[i] === `--discard-prev`) {
+      if (i > 0 && copyArr[i - 2] !== `--discard-next`) {
+        resultArr.pop();
       }
-    }
-    // Не працює, відклала
-    if (copyArr[i] === `--discard-prev`) {
-      if (copyArr[i - 1]) {
-        copyArr.splice(i - 1, 2);
-      } else {
-        copyArr.splice(i, 1);
+    } else if (copyArr[i] === `--double-next`) {
+      if (i < copyArr.length - 1) {
+        resultArr.push(copyArr[i + 1]);
       }
+    } else if (copyArr[i] === `--double-prev`) {
+      if (i > 0 && copyArr[i - 2] !== `--discard-next`) {
+        resultArr.push(copyArr[i - 1]);
+      }
+    } else {
+      resultArr.push(copyArr[i]);
     }
-
-    if (copyArr[i] === `--double-next`) copyArr.splice(i, 1, copyArr[i + 1]);
-    if (copyArr[i] === `--double-prev`) copyArr.splice(i, 1, copyArr[i - 1]);
   }
 
-  return copyArr;
+  return resultArr;
 }
 
 module.exports = {
